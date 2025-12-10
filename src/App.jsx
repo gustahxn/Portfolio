@@ -342,7 +342,7 @@ function App() {
         </header>
 
         <main className="pt-0 px-6 pb-12 lg:w-1/2 lg:py-24 lg:px-12 space-y-24">
-          <section className="pt-8 dark:border-t dark:border-neutral-900 border-t border-neutral-200">
+          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-300">
             <h3 className="text-sm font-bold uppercase tracking-widest mb-8 dark:text-neutral-200 text-neutral-700">
               {data.sections.projects}
             </h3>
@@ -393,7 +393,7 @@ function App() {
             </div>
           </section>
 
-          <section className="pt-8 dark:border-t dark:border-neutral-900 border-t border-neutral-200">
+          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-300">
             <h3 className="text-sm font-bold uppercase tracking-widest mb-8 dark:text-neutral-200 text-neutral-700">
               {data.sections.experience}
             </h3>
@@ -417,7 +417,7 @@ function App() {
             </div>
           </section>
 
-          <section className="pt-8 dark:border-t dark:border-neutral-900 border-t border-neutral-200">
+          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-300">
             <h3 className="text-sm font-bold uppercase tracking-widest mb-8 dark:text-neutral-200 text-neutral-700">
               {data.sections.skills}
             </h3>
@@ -449,7 +449,7 @@ function App() {
             </div>
           </section>
 
-          <section className="pt-8 dark:border-t dark:border-neutral-900 border-t border-neutral-200">
+          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-300">
             <h3 className="text-sm font-bold uppercase tracking-widest mb-8 dark:text-neutral-200 text-neutral-700">
               {data.sections.education}
             </h3>
