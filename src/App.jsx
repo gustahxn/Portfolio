@@ -1,58 +1,125 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, ArrowUpRight, Phone } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUpRight, Phone, Languages } from "lucide-react";
 
-const data = {
-  name: "Gustavo da Silva",
-  role: "Desenvolvedor Full-Stack",
-  bio: "Foco em criar experiências digitais sólidas.\nEm busca de oportunidades como Estagiário ou Junior, na área de Desenvolvimento/TI",
-  links: {
-    github: "https://github.com/gustahxn",
-    linkedin: "https://www.linkedin.com/in/gustavo-oliveiradasilva",
-    email: "mailto:gusta2007i@gmail.com",
-    phone: "tel:+5515991616085",
+const translations = {
+  pt: {
+    name: "Gustavo da Silva",
+    role: "Desenvolvedor Full-Stack",
+    bio: "Foco em criar experiências digitais sólidas.\nEm busca de oportunidades como Estagiário ou Junior, na área de Desenvolvimento/TI",
+    projects: [
+      {
+        title: "Luvit.fun",
+        desc: "Plataforma social completa com arquitetura robusta de banco de dados.",
+        tech: ["PHP", "SQL", "JavaScript"],
+        link: "https://www.luvit.fun",
+      },
+      {
+        title: "SoroFitness",
+        desc: "Aplicação moderna para saúde e cálculo de métricas corporais.",
+        tech: ["React", "Tailwind", "Vercel"],
+        link: "https://calcimc-gray.vercel.app",
+      },
+    ],
+    experience: [
+      {
+        company: "Prefeitura Municipal de Sorocaba",
+        role: "Estagiário de TI",
+        time: "2024 — 2025",
+        desc: "Atuação direta no suporte técnico, responsável pela configuração de estações de trabalho, manutenção preventiva e auxílio na gestão de sistemas internos, garantindo a disponibilidade dos serviços municipais.",
+      },
+    ],
+    education: [
+      {
+        school: "FATEC Sorocaba",
+        course: "Análise e Desenvolvimento de Sistemas - Superior",
+        time: "2026 — 2028",
+      },
+      {
+        school: "ETEC Fernando Prestes",
+        course: "Desenvolvimento de Sistemas - Técnico",
+        time: "2023 — 2025",
+      },
+    ],
+    skills: ["PHP", "Laravel", "React", "Node.js", "SQL", "Git", "C#"],
+    areas: ["Web Development", "Banco de Dados", "Hardware", "Suporte TI"],
+    sections: {
+      experience: "Experiência",
+      skills: "Habilidades",
+      education: "Formação Acadêmica",
+    },
+    footer: "Est 2007, resolvendo problemas.",
+    terminal: {
+      lines: [
+        { cmd: "café", status: "Concluído", color: "text-emerald-400" },
+        { cmd: "bugs", status: "Corrigindo...", color: "text-amber-400" },
+        { cmd: "produção", status: "Enviando...", color: "text-blue-400" },
+        { cmd: "sono", status: "Erro 404", color: "text-rose-500" },
+      ],
+    },
   },
-  projects: [
-    {
-      title: "Luvit.fun",
-      desc: "Plataforma social completa com arquitetura robusta de banco de dados.",
-      tech: ["PHP", "SQL", "JavaScript"],
-      link: "https://www.luvit.fun",
+  en: {
+    name: "Gustavo da Silva",
+    role: "Full-Stack Developer",
+    bio: "Focused on creating solid digital experiences.\nSeeking opportunities as an Intern or Junior in Development/IT",
+    projects: [
+      {
+        title: "Luvit.fun",
+        desc: "Complete social platform with robust database architecture.",
+        tech: ["PHP", "SQL", "JavaScript"],
+        link: "https://www.luvit.fun",
+      },
+      {
+        title: "SoroFitness",
+        desc: "Modern application for health and body metrics calculation.",
+        tech: ["React", "Tailwind", "Vercel"],
+        link: "https://calcimc-gray.vercel.app",
+      },
+    ],
+    experience: [
+      {
+        company: "Sorocaba City Hall",
+        role: "IT Intern",
+        time: "2024 — 2025",
+        desc: "Direct work in technical support, responsible for workstation configuration, preventive maintenance, and assistance in managing internal systems, ensuring the availability of municipal services.",
+      },
+    ],
+    education: [
+      {
+        school: "FATEC Sorocaba",
+        course: "Systems Analysis and Development - Higher Education",
+        time: "2026 — 2028",
+      },
+      {
+        school: "ETEC Fernando Prestes",
+        course: "Systems Development - Technical",
+        time: "2023 — 2025",
+      },
+    ],
+    skills: ["PHP", "Laravel", "React", "Node.js", "SQL", "Git", "C#"],
+    areas: ["Web Development", "Database", "Hardware", "IT Support"],
+    sections: {
+      experience: "Experience",
+      skills: "Skills",
+      education: "Education",
     },
-    {
-      title: "SoroFitness",
-      desc: "Aplicação moderna para saúde e cálculo de métricas corporais.",
-      tech: ["React", "Tailwind", "Vercel"],
-      link: "https://calcimc-gray.vercel.app",
+    footer: "Est 2007, solving problems.",
+    terminal: {
+      lines: [
+        { cmd: "coffee", status: "Complete", color: "text-emerald-400" },
+        { cmd: "bugs", status: "Fixing...", color: "text-amber-400" },
+        { cmd: "production", status: "Deploying...", color: "text-blue-400" },
+        { cmd: "sleep", status: "Error 404", color: "text-rose-500" },
+      ],
     },
-  ],
-  experience: [
-    {
-      company: "Prefeitura Municipal de Sorocaba",
-      role: "Estagiário de TI",
-      time: "2024 — 2025",
-      desc: "Atuação direta no suporte técnico, responsável pela configuração de estações de trabalho, manutenção preventiva e auxílio na gestão de sistemas internos, garantindo a disponibilidade dos serviços municipais.",
-    },
-  ],
-  education: [
-    {
-      school: "FATEC Sorocaba",
-      course: "Análise e Desenvolvimento de Sistemas - Superior",
-      time: "2026 — 2028",
-    },
-    {
-      school: "ETEC Fernando Prestes",
-      course: "Desenvolvimento de Sistemas - Técnico",
-      time: "2023 — 2025",
-    },
-  ],
-  skills: ["PHP", "Laravel", "React", "Node.js", "SQL", "Git", "C#"],
-  areas: [
-    "Web Development",
-    "Banco de Dados",
-    "Hardware",
-    "Suporte TI",
-  ],
+  },
+};
+
+const links = {
+  github: "https://github.com/gustahxn",
+  linkedin: "https://www.linkedin.com/in/gustavo-oliveiradasilva",
+  email: "mailto:gusta2007i@gmail.com",
+  phone: "tel:+5515991616085",
 };
 
 const TechBackground = () => {
@@ -64,21 +131,15 @@ const TechBackground = () => {
   );
 };
 
-const StatusTerminal = () => {
+const StatusTerminal = ({ lines }) => {
   const [lineIndex, setLineIndex] = useState(0);
-  const lines = [
-    { cmd: "café", status: "Concluído", color: "text-emerald-400" },
-    { cmd: "bugs", status: "Corrigindo...", color: "text-amber-400" },
-    { cmd: "produção", status: "Enviando...", color: "text-blue-400" },
-    { cmd: "sono", status: "Erro 404", color: "text-rose-500" },
-  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setLineIndex((prev) => (prev + 1) % lines.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [lines.length]);
 
   return (
     <div className="mt-12 w-full max-w-sm p-5 rounded-lg bg-neutral-900/40 border border-neutral-800 font-mono text-sm backdrop-blur-sm select-none hover:border-neutral-700 transition-colors">
@@ -125,9 +186,25 @@ const Card = ({ children, className = "" }) => (
 );
 
 function App() {
+  const [language, setLanguage] = useState("pt");
+  const data = translations[language];
+
+  const toggleLanguage = () => {
+    setLanguage((prev) => (prev === "pt" ? "en" : "pt"));
+  };
+
   return (
     <div className="min-h-screen bg-black text-neutral-400 font-sans selection:bg-neutral-800 selection:text-white">
       <TechBackground />
+
+      <button
+        onClick={toggleLanguage}
+        className="fixed top-6 right-6 z-50 flex items-center gap-2 px-4 py-2 bg-neutral-900/80 backdrop-blur-sm border border-neutral-800 hover:border-neutral-600 rounded-lg text-neutral-300 hover:text-white transition-all duration-300 group"
+        aria-label="Toggle language"
+      >
+        <Languages size={18} className="group-hover:rotate-12 transition-transform" />
+        <span className="text-sm font-medium">{language === "pt" ? "EN" : "PT"}</span>
+      </button>
 
       <div className="relative z-10 lg:flex lg:justify-between lg:gap-4 max-w-screen-xl mx-auto">
         <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between py-12 px-6 lg:py-24 lg:px-12">
@@ -149,27 +226,27 @@ function App() {
 
               <nav className="flex items-center gap-5">
                 <a
-                  href={data.links.github}
+                  href={links.github}
                   target="_blank"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   <Github size={22} />
                 </a>
                 <a
-                  href={data.links.linkedin}
+                  href={links.linkedin}
                   target="_blank"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   <Linkedin size={22} />
                 </a>
                 <a
-                  href={data.links.email}
+                  href={links.email}
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   <Mail size={22} />
                 </a>
                 <a
-                  href={data.links.phone}
+                  href={links.phone}
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   <Phone size={22} />
@@ -181,7 +258,7 @@ function App() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 1 }}
               >
-                <StatusTerminal />
+                <StatusTerminal lines={data.terminal.lines} />
               </motion.div>
             </motion.div>
           </div>
@@ -235,7 +312,7 @@ function App() {
 
           <section className="pt-8 border-t border-neutral-900">
             <h3 className="text-sm font-bold uppercase tracking-widest text-neutral-200 mb-8">
-              Experiência
+              {data.sections.experience}
             </h3>
             <div className="space-y-10">
               {data.experience.map((xp, i) => (
@@ -259,7 +336,7 @@ function App() {
 
           <section className="pt-8 border-t border-neutral-900">
             <h3 className="text-sm font-bold uppercase tracking-widest text-neutral-200 mb-8">
-              Habilidades
+              {data.sections.skills}
             </h3>
             <div className="flex flex-col gap-4">
               <div className="flex flex-wrap gap-2">
@@ -287,7 +364,7 @@ function App() {
 
           <section className="pt-8 border-t border-neutral-900">
             <h3 className="text-sm font-bold uppercase tracking-widest text-neutral-200 mb-8">
-              Formação Acadêmica
+              {data.sections.education}
             </h3>
             <div className="grid gap-4">
               {data.education.map((edu, i) => (
@@ -307,7 +384,7 @@ function App() {
           </section>
 
           <footer className="text-xs text-neutral-600 pt-12">
-            <p>Est 2007, resolvendo problemas.</p>
+            <p>{data.footer}</p>
           </footer>
         </main>
       </div>
