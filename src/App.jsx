@@ -125,9 +125,8 @@ const links = {
 const TechBackground = () => {
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-
       <div className="absolute inset-0 
-          dark:bg-[linear-gradient(to_right,#80808016_1px,transparent_1px),linear-gradient(to_bottom,#80808016_1px,transparent_1px)] dark:bg-[size:16px_16px] 
+          dark:bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] dark:bg-[size:16px_16px] 
           bg-[linear-gradient(to_right,#00000016_1px,transparent_1px),linear-gradient(to_bottom,#00000016_1px,transparent_1px)] bg-[size:16px_16px]" 
       />
       <div className="absolute inset-0 dark:bg-gradient-to-t dark:from-black/80 dark:via-black/60 dark:to-transparent bg-gradient-to-t from-white/90 via-white/70 to-transparent" />
