@@ -44,6 +44,7 @@ const translations = {
     skills: ["PHP", "Laravel", "React", "Node.js", "SQL", "Git", "C#"],
     areas: ["Web Development", "Banco de Dados", "Hardware", "Suporte TI"],
     sections: {
+      projects: "Projetos",
       experience: "Experiência",
       skills: "Habilidades",
       education: "Formação Acadêmica",
@@ -99,6 +100,7 @@ const translations = {
     skills: ["PHP", "Laravel", "React", "Node.js", "SQL", "Git", "C#"],
     areas: ["Web Development", "Database", "Hardware", "IT Support"],
     sections: {
+      projects: "Projects",
       experience: "Experience",
       skills: "Skills",
       education: "Education",
@@ -341,6 +343,9 @@ function App() {
 
         <main className="pt-0 px-6 pb-12 lg:w-1/2 lg:py-24 lg:px-12 space-y-24">
           <section>
+            <h3 className="text-sm font-bold uppercase tracking-widest mb-8 dark:text-neutral-200 text-neutral-700">
+              {data.sections.projects}
+            </h3>
             <div className="grid gap-6">
               {data.projects.map((project, i) => (
                 <motion.div
@@ -465,7 +470,7 @@ function App() {
             </div>
           </section>
 
-          <footer className="text-xs pt-12 dark:text-neutral-600 text-neutral-400">
+          <footer className="text-xs pt-12 dark:text-neutral-400 text-neutral-500">
             <p>{data.footer}</p>
           </footer>
         </main>
