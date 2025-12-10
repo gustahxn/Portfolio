@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, ArrowUpRight, Phone, Sun, Moon } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  ArrowUpRight,
+  Phone,
+  Sun,
+  Moon,
+  Send,
+  User,
+  AtSign,
+  MessageSquare,
+} from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 const translations = {
   pt: {
     name: "Gustavo da Silva",
-    role: "Desenvolvedor Full-Stack",
+    role: "Desenvolvedor Full-Stack - 18 anos",
     bio: "Foco em criar experiências digitais sólidas.\nEm busca de oportunidades como Estagiário ou Junior, na área de Desenvolvimento/TI",
     projects: [
       {
@@ -48,6 +61,19 @@ const translations = {
       experience: "Experiência",
       skills: "Habilidades",
       education: "Formação Acadêmica",
+      contact: "Contato",
+    },
+    contactForm: {
+      name: "Seu Nome",
+      namePlaceholder: "Como devo te chamar?",
+      email: "Seu E-mail",
+      emailPlaceholder: "exemplo@email.com",
+      message: "Sua Mensagem",
+      messagePlaceholder: "Olá! Gostaria de falar sobre...",
+      send: "Enviar Mensagem",
+      sending: "Enviando...",
+      success: "Mensagem enviada com sucesso!",
+      error: "Erro ao enviar. Tente novamente.",
     },
     footer: "Est 2007, resolvendo problemas.",
     terminal: {
@@ -61,7 +87,7 @@ const translations = {
   },
   en: {
     name: "Gustavo da Silva",
-    role: "Full-Stack Developer",
+    role: "Full-Stack Developer - 18 y",
     bio: "Focused on creating solid digital experiences.\nSeeking opportunities as an Intern or Junior in Development/IT",
     projects: [
       {
@@ -104,6 +130,19 @@ const translations = {
       experience: "Experience",
       skills: "Skills",
       education: "Education",
+      contact: "Contact",
+    },
+    contactForm: {
+      name: "Your Name",
+      namePlaceholder: "What should I call you?",
+      email: "Your Email",
+      emailPlaceholder: "example@email.com",
+      message: "Your Message",
+      messagePlaceholder: "Hi! I'd like to talk about...",
+      send: "Send Message",
+      sending: "Sending...",
+      success: "Message sent successfully!",
+      error: "Failed to send. Please try again.",
     },
     footer: "Est 2007, solving problems.",
     terminal: {
@@ -127,9 +166,10 @@ const links = {
 const TechBackground = () => {
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 
+      <div
+        className="absolute inset-0 
           dark:bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] dark:bg-[size:16px_16px] 
-          bg-[linear-gradient(to_right,#00000016_1px,transparent_1px),linear-gradient(to_bottom,#00000016_1px,transparent_1px)] bg-[size:16px_16px]" 
+          bg-[linear-gradient(to_right,#00000016_1px,transparent_1px),linear-gradient(to_bottom,#00000016_1px,transparent_1px)] bg-[size:16px_16px]"
       />
       <div className="absolute inset-0 dark:bg-gradient-to-t dark:from-black/80 dark:via-black/60 dark:to-transparent bg-gradient-to-t from-white/90 via-white/70 to-transparent" />
     </div>
@@ -147,9 +187,11 @@ const StatusTerminal = ({ lines }) => {
   }, [lines.length]);
 
   return (
-    <div className="mt-12 w-full max-w-sm p-5 rounded-lg font-mono text-sm backdrop-blur-sm select-none transition-colors 
+    <div
+      className="mt-12 w-full max-w-sm p-5 rounded-lg font-mono text-sm backdrop-blur-sm select-none transition-colors 
         dark:bg-neutral-900/40 dark:border dark:border-neutral-800 dark:hover:border-neutral-700
-        bg-neutral-100/70 border border-neutral-300 hover:border-neutral-500">
+        bg-neutral-100/70 border border-neutral-300 hover:border-neutral-500"
+    >
       <div className="flex gap-1.5 mb-4 opacity-100">
         <div className="w-3 h-3 rounded-full bg-red-500" />
         <div className="w-3 h-3 rounded-full bg-amber-500" />
@@ -174,7 +216,9 @@ const StatusTerminal = ({ lines }) => {
                 i === lineIndex ? "opacity-100" : "opacity-30"
               } transition-opacity duration-300`}
             >
-              <span className="dark:text-neutral-400 text-neutral-600">{line.cmd}</span>
+              <span className="dark:text-neutral-400 text-neutral-600">
+                {line.cmd}
+              </span>
               <span className={line.color}>{line.status}</span>
             </div>
           ))}
@@ -194,17 +238,157 @@ const Card = ({ children, className = "" }) => (
   </div>
 );
 
-const getInitialTheme = () => {
-    if (typeof window !== 'undefined' && localStorage.getItem('theme')) {
-        return localStorage.getItem('theme');
-    }
-    return 'dark'; 
+const ContactForm = ({ texts }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    const serviceID = "service_7bxnaqk";
+    const templateID = "template_0ks2qhh";
+    const publicKey = "IwhtsYH-k64BCJ5bR";
+
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      title: "Contato do Portfólio",
+    };
+
+    emailjs
+      .send(serviceID, templateID, templateParams, publicKey)
+      .then((response) => {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus(""), 5000);
+      })
+      .catch((err) => {
+        console.error("FAILED...", err);
+        setStatus("error");
+      });
+  };
+
+  return (
+    <Card className="mt-8">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="group/input">
+          <label className="block text-xs font-medium mb-1 dark:text-neutral-400 text-neutral-600">
+            {texts.name}
+          </label>
+          <div className="relative">
+            <User
+              className="absolute left-3 top-2.5 text-neutral-400 group-focus-within/input:text-emerald-500 transition-colors"
+              size={16}
+            />
+            <input
+              type="text"
+              name="name"
+              required
+              placeholder={texts.namePlaceholder}
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full pl-9 pr-3 py-2 rounded text-sm outline-none transition-all
+                dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-1 dark:focus:ring-neutral-500
+                bg-neutral-50 text-neutral-800 border border-neutral-300 focus:border-neutral-500"
+            />
+          </div>
+        </div>
+
+        <div className="group/input">
+          <label className="block text-xs font-medium mb-1 dark:text-neutral-400 text-neutral-600">
+            {texts.email}
+          </label>
+          <div className="relative">
+            <AtSign
+              className="absolute left-3 top-2.5 text-neutral-400 group-focus-within/input:text-emerald-500 transition-colors"
+              size={16}
+            />
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder={texts.emailPlaceholder}
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full pl-9 pr-3 py-2 rounded text-sm outline-none transition-all
+                dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-1 dark:focus:ring-neutral-500
+                bg-neutral-50 text-neutral-800 border border-neutral-300 focus:border-neutral-500"
+            />
+          </div>
+        </div>
+
+        <div className="group/input">
+          <label className="block text-xs font-medium mb-1 dark:text-neutral-400 text-neutral-600">
+            {texts.message}
+          </label>
+          <div className="relative">
+            <MessageSquare
+              className="absolute left-3 top-3 text-neutral-400 group-focus-within/input:text-emerald-500 transition-colors"
+              size={16}
+            />
+            <textarea
+              name="message"
+              required
+              rows="4"
+              placeholder={texts.messagePlaceholder}
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full pl-9 pr-3 py-2 rounded text-sm outline-none transition-all resize-none
+                dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-1 dark:focus:ring-neutral-500
+                bg-neutral-50 text-neutral-800 border border-neutral-300 focus:border-neutral-500"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          disabled={status === "sending" || status === "success"}
+          className={`flex items-center gap-2 px-4 py-2 rounded text-sm font-medium transition-all
+            ${
+              status === "success"
+                ? "bg-emerald-500 text-white"
+                : "dark:bg-neutral-100 dark:text-black dark:hover:bg-neutral-800 dark:hover:text-neutral-200 bg-neutral-800 text-white hover:bg-black"
+            }`}
+        >
+          {status === "sending" ? (
+            texts.sending
+          ) : status === "success" ? (
+            texts.success
+          ) : (
+            <>
+              {texts.send} <Send size={14} />
+            </>
+          )}
+        </button>
+
+        {status === "error" && (
+          <p className="text-xs text-rose-500 mt-2">{texts.error}</p>
+        )}
+      </form>
+    </Card>
+  );
 };
 
+const getInitialTheme = () => {
+  if (typeof window !== "undefined" && localStorage.getItem("theme")) {
+    return localStorage.getItem("theme");
+  }
+  return "dark";
+};
 
 function App() {
   const [language, setLanguage] = useState("pt");
-  const [theme, setTheme] = useState(getInitialTheme); 
+  const [theme, setTheme] = useState(getInitialTheme);
   const data = translations[language];
 
   useEffect(() => {
@@ -214,20 +398,22 @@ function App() {
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem('theme', theme);
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
-  const currentThemeIcon = theme === "dark" ? <Sun size={18} /> : <Moon size={18} />;
+  const currentThemeIcon =
+    theme === "dark" ? <Sun size={18} /> : <Moon size={18} />;
 
   return (
-    <div className="min-h-screen font-sans selection:bg-opacity-50 transition-colors 
+    <div
+      className="min-h-screen font-sans selection:bg-opacity-50 transition-colors 
         dark:bg-black dark:text-neutral-400 dark:selection:bg-neutral-800 dark:selection:text-white
-        bg-white text-neutral-600 selection:bg-neutral-200 selection:text-black">
-      
+        bg-white text-neutral-600 selection:bg-neutral-200 selection:text-black"
+    >
       <TechBackground />
 
       <motion.button
@@ -242,9 +428,11 @@ function App() {
         {currentThemeIcon}
       </motion.button>
 
-      <div className="fixed top-4 right-4 lg:top-6 lg:right-6 z-50 flex items-center gap-0 backdrop-blur-sm rounded-full p-1 shadow-lg
+      <div
+        className="fixed top-4 right-4 lg:top-6 lg:right-6 z-50 flex items-center gap-0 backdrop-blur-sm rounded-full p-1 shadow-lg
           dark:bg-neutral-800 dark:border-2 dark:border-neutral-600
-          bg-white border-2 border-neutral-300">
+          bg-white border-2 border-neutral-300"
+      >
         <button
           onClick={() => setLanguage("pt")}
           className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
@@ -378,9 +566,7 @@ function App() {
                         {project.tech.map((t) => (
                           <span
                             key={t}
-                            className="text-xs font-medium px-3 py-1 rounded-full transition-colors
-                                dark:bg-neutral-800 dark:text-neutral-300 dark:border dark:border-neutral-700/50 dark:group-hover:border-neutral-500
-                                bg-neutral-100 text-neutral-600 border border-neutral-300 group-hover:border-neutral-500"
+                            className="text-xs font-medium px-3 py-1 rounded-full transition-colors dark:bg-neutral-800 dark:text-neutral-300 dark:border dark:border-neutral-700/50 dark:group-hover:border-neutral-500 bg-neutral-100 text-neutral-600 border border-neutral-300 group-hover:border-neutral-500"
                           >
                             {t}
                           </span>
@@ -410,7 +596,9 @@ function App() {
                     <p className="text-sm mb-2 dark:text-neutral-500 text-neutral-400">
                       {xp.company}
                     </p>
-                    <p className="text-sm leading-relaxed dark:text-neutral-400 text-neutral-600">{xp.desc}</p>
+                    <p className="text-sm leading-relaxed dark:text-neutral-400 text-neutral-600">
+                      {xp.desc}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -426,9 +614,7 @@ function App() {
                 {data.skills.map((s, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 text-xs font-medium rounded transition-colors cursor-default
-                      dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 dark:hover:border-neutral-500
-                      text-neutral-700 bg-neutral-100 border border-neutral-300 hover:border-neutral-500"
+                    className="px-3 py-1.5 text-xs font-medium rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 dark:hover:border-neutral-500 text-neutral-700 bg-neutral-100 border border-neutral-300 hover:border-neutral-500"
                   >
                     {s}
                   </span>
@@ -438,9 +624,7 @@ function App() {
                 {data.areas.map((s, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 text-xs font-medium rounded transition-colors cursor-default
-                      dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 dark:hover:border-neutral-500
-                      text-neutral-700 bg-neutral-100 border border-neutral-300 hover:border-neutral-500"
+                    className="px-3 py-1.5 text-xs font-medium rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 dark:hover:border-neutral-500 text-neutral-700 bg-neutral-100 border border-neutral-300 hover:border-neutral-500"
                   >
                     {s}
                   </span>
@@ -460,7 +644,9 @@ function App() {
                     <div className="font-medium dark:text-neutral-100 text-neutral-800">
                       {edu.school}
                     </div>
-                    <div className="dark:text-neutral-500 text-neutral-600">{edu.course}</div>
+                    <div className="dark:text-neutral-500 text-neutral-600">
+                      {edu.course}
+                    </div>
                   </div>
                   <div className="font-mono text-xs dark:text-neutral-600 text-neutral-400">
                     {edu.time}
@@ -468,6 +654,18 @@ function App() {
                 </div>
               ))}
             </div>
+          </section>
+
+          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-300">
+            <h3 className="text-sm font-bold uppercase tracking-widest mb-8 dark:text-neutral-200 text-neutral-700">
+              {data.sections.contact}
+            </h3>
+            <p className="mb-6 text-sm dark:text-neutral-400 text-neutral-600">
+              {language === "pt"
+                ? "Tem um projeto em mente, deseja me contratar ou quer alinhas umas ideias? Entre em contato comigo!"
+                : "Have a project in mind or just want to chat? Contact me!"}
+            </p>
+            <ContactForm texts={data.contactForm} />
           </section>
 
           <footer className="text-xs pt-12 dark:text-neutral-400 text-neutral-500">
