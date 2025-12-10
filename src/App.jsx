@@ -280,7 +280,7 @@ function App() {
       </div>
 
       <div className="relative z-10 lg:flex lg:justify-between lg:gap-4 max-w-screen-xl mx-auto">
-        <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between py-12 px-6 lg:py-24 lg:px-12">
+        <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between **pt-24** pb-12 px-6 lg:py-24 lg:px-12">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
