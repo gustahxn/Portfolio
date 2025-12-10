@@ -126,9 +126,9 @@ const TechBackground = () => {
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
       <div className="absolute inset-0 
-          dark:bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] dark:bg-[size:16px_16px] 
-          bg-[linear-gradient(to_right,#00000016_1px,transparent_1px),linear-gradient(to_bottom,#00000016_1px,transparent_1px)] bg-[size:16px_16px]" 
-      />
+          dark:bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] dark:bg-[size:16px_16px] 
+          bg-[linear-gradient(to_right,#00000016_1px,transparent_1px),linear-gradient(to_bottom,#00000016_1px,transparent_1px)] bg-[size:16px_16px]" 
+      />
       <div className="absolute inset-0 dark:bg-gradient-to-t dark:from-black/80 dark:via-black/60 dark:to-transparent bg-gradient-to-t from-white/90 via-white/70 to-transparent" />
     </div>
   );
@@ -193,10 +193,10 @@ const Card = ({ children, className = "" }) => (
 );
 
 const getInitialTheme = () => {
-    if (typeof window !== 'undefined' && localStorage.getItem('theme')) {
-        return localStorage.getItem('theme');
-    }
-    return 'dark'; 
+    if (typeof window !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+    }
+    return 'dark'; 
 };
 
 
@@ -212,7 +212,7 @@ function App() {
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem('theme', theme);
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -280,7 +280,7 @@ function App() {
       </div>
 
       <div className="relative z-10 lg:flex lg:justify-between lg:gap-4 max-w-screen-xl mx-auto">
-        <header className="**mt-32** lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between py-12 px-6 lg:mt-0 lg:py-24 lg:px-12">
+        <header className="**mt-48** py-12 px-6 lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:mt-0 lg:py-24 lg:px-12">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
