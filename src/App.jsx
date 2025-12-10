@@ -240,9 +240,9 @@ function App() {
         {currentThemeIcon}
       </motion.button>
 
-      <div className="fixed top-4 right-4 lg:top-6 lg:right-6 z-50 flex items-center gap-0 backdrop-blur-sm rounded-full p-1
-          dark:bg-neutral-900/80 dark:border dark:border-neutral-800
-          bg-neutral-100/80 border border-neutral-300">
+      <div className="fixed top-4 right-4 lg:top-6 lg:right-6 z-50 flex items-center gap-0 backdrop-blur-sm rounded-full p-1 shadow-lg
+          dark:bg-neutral-800 dark:border-2 dark:border-neutral-600
+          bg-white border-2 border-neutral-300">
         <button
           onClick={() => setLanguage("pt")}
           className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
