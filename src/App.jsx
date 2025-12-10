@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, ArrowUpRight, Phone, Languages } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUpRight, Phone } from "lucide-react";
 
 const translations = {
   pt: {
@@ -189,22 +189,46 @@ function App() {
   const [language, setLanguage] = useState("pt");
   const data = translations[language];
 
-  const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "pt" ? "en" : "pt"));
-  };
-
   return (
     <div className="min-h-screen bg-black text-neutral-400 font-sans selection:bg-neutral-800 selection:text-white">
       <TechBackground />
 
-      <button
-        onClick={toggleLanguage}
-        className="fixed top-6 right-6 z-50 flex items-center gap-2 px-4 py-2 bg-neutral-900/80 backdrop-blur-sm border border-neutral-800 hover:border-neutral-600 rounded-lg text-neutral-300 hover:text-white transition-all duration-300 group"
-        aria-label="Toggle language"
-      >
-        <Languages size={18} className="group-hover:rotate-12 transition-transform" />
-        <span className="text-sm font-medium">{language === "pt" ? "EN" : "PT"}</span>
-      </button>
+      <div className="fixed top-6 right-6 z-50 flex items-center gap-0 bg-neutral-900/80 backdrop-blur-sm border border-neutral-800 rounded-full p-1">
+        <button
+          onClick={() => setLanguage("pt")}
+          className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+            language === "pt"
+              ? "text-white"
+              : "text-neutral-500 hover:text-neutral-300"
+          }`}
+        >
+          {language === "pt" && (
+            <motion.div
+              layoutId="activeTab"
+              className="absolute inset-0 bg-neutral-700 rounded-full"
+              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            />
+          )}
+          <span className="relative z-10">PT</span>
+        </button>
+        <button
+          onClick={() => setLanguage("en")}
+          className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+            language === "en"
+              ? "text-white"
+              : "text-neutral-500 hover:text-neutral-300"
+          }`}
+        >
+          {language === "en" && (
+            <motion.div
+              layoutId="activeTab"
+              className="absolute inset-0 bg-neutral-700 rounded-full"
+              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            />
+          )}
+          <span className="relative z-10">EN</span>
+        </button>
+      </div>
 
       <div className="relative z-10 lg:flex lg:justify-between lg:gap-4 max-w-screen-xl mx-auto">
         <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between py-12 px-6 lg:py-24 lg:px-12">
@@ -214,7 +238,7 @@ function App() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-4xl lg:text-5xl font-bold text-neutral-100 tracking-tight mb-3">
+              <h1 className="text-4xl lg:text-5xl font-bold text-neutral-100 tracking-tight mb-3 font-['Space_Grotesk']">
                 {data.name}
               </h1>
               <h2 className="text-xl text-neutral-100 font-medium mb-6">
@@ -225,27 +249,27 @@ function App() {
               </p>
 
               <nav className="flex items-center gap-5">
-                <a
+                
                   href={links.github}
                   target="_blank"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   <Github size={22} />
                 </a>
-                <a
+                
                   href={links.linkedin}
                   target="_blank"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   <Linkedin size={22} />
                 </a>
-                <a
+                
                   href={links.email}
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   <Mail size={22} />
                 </a>
-                <a
+                
                   href={links.phone}
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
@@ -274,7 +298,7 @@ function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <a
+                  
                     href={project.link}
                     target="_blank"
                     rel="noreferrer"
