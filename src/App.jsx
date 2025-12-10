@@ -7,6 +7,11 @@ const translations = {
     name: "Gustavo da Silva",
     role: "Desenvolvedor Full-Stack",
     bio: "Foco em criar experiências digitais sólidas.\nEm busca de oportunidades como Estagiário ou Junior, na área de Desenvolvimento/TI",
+    availability: {
+      status: "Disponível para oportunidades",
+      location: "Sorocaba, São Paulo",
+      response: "Resposta em até 24h"
+    },
     projects: [
       {
         title: "Luvit.fun",
@@ -63,6 +68,11 @@ const translations = {
     name: "Gustavo da Silva",
     role: "Full-Stack Developer",
     bio: "Focused on creating solid digital experiences.\nSeeking opportunities as an Intern or Junior in Development/IT",
+    availability: {
+      status: "Available for opportunities",
+      location: "Sorocaba, São Paulo",
+      response: "Response within 24h"
+    },
     projects: [
       {
         title: "Luvit.fun",
@@ -336,6 +346,32 @@ function App() {
                 transition={{ delay: 0.5, duration: 1 }}
               >
                 <StatusTerminal lines={data.terminal.lines} />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="mt-8 space-y-3"
+              >
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="dark:text-neutral-400 text-neutral-600">
+                    {data.availability.status}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-2 h-2 rounded-full dark:bg-neutral-700 bg-neutral-300" />
+                  <span className="dark:text-neutral-500 text-neutral-500">
+                    {data.availability.location}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-2 h-2 rounded-full dark:bg-neutral-700 bg-neutral-300" />
+                  <span className="dark:text-neutral-500 text-neutral-500">
+                    {data.availability.response}
+                  </span>
+                </div>
               </motion.div>
             </motion.div>
           </div>
