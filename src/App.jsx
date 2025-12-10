@@ -238,10 +238,10 @@ function App() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-4xl lg:text-5xl font-bold text-neutral-100 tracking-tight mb-3" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-                {data.name}
+              <h1 className="text-4xl lg:text-5xl font-bold text-neutral-100 tracking-tight mb-3 font-mono">
+                  {data.name}
               </h1>
-              <h2 className="text-xl text-neutral-100 font-medium mb-6">
+                <h2 className="text-xl text-neutral-100 font-medium mb-6">
                 {data.role}
               </h2>
               <p className="max-w-sm leading-relaxed text-neutral-400 mb-8 whitespace-pre-line">
