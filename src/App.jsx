@@ -361,7 +361,7 @@ const ContactForm = ({ texts }) => {
                 "border border-transparent bg-neutral-800 text-white hover:bg-neutral-200 hover:border-black hover:text-black" +
                 " dark:bg-neutral-100 dark:text-black dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
           }`}
-        >
+              >
           {status === "sending" ? (
             texts.sending
           ) : status === "success" ? (
@@ -403,44 +403,8 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleTheme = (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
-
-    const newTheme = theme === "dark" ? "light" : "dark";
-    
-    const ripple = document.createElement("div");
-    ripple.style.position = "fixed";
-    ripple.style.borderRadius = "50%";
-    ripple.style.transform = "translate(-50%, -50%)";
-    ripple.style.left = `${x}px`;
-    ripple.style.top = `${y}px`;
-    ripple.style.width = "0px";
-    ripple.style.height = "0px";
-    ripple.style.pointerEvents = "none";
-    ripple.style.zIndex = "9999";
-    ripple.style.transition = "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
-    
-    if (newTheme === "dark") {
-      ripple.style.background = "black";
-    } else {
-      ripple.style.background = "white";
-    }
-    
-    document.body.appendChild(ripple);
-    
-    requestAnimationFrame(() => {
-      const diagonal = Math.sqrt(
-        Math.pow(window.innerWidth, 2) + Math.pow(window.innerHeight, 2)
-      );
-      ripple.style.width = `${diagonal * 2}px`;
-      ripple.style.height = `${diagonal * 2}px`;
-    });
-    
-    setTimeout(() => {
-      setTheme(newTheme);
-      ripple.remove();
-    }, 800);
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
   const currentThemeIcon =
@@ -462,21 +426,8 @@ function App() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
       >
-        <motion.div
-          key={theme}
-          initial={{ rotate: -180, scale: 0 }}
-          animate={{ rotate: 0, scale: 1 }}
-          transition={{ 
-            type: "spring", 
-            stiffness: 200, 
-            damping: 15 
-          }}
-        >
-          {currentThemeIcon}
-        </motion.div>
+        {currentThemeIcon}
       </motion.button>
 
       <div
