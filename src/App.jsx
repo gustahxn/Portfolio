@@ -32,7 +32,7 @@ const translations = {
       {
         title: "Escuta Aí",
         desc: "Similaridade musical, conectando o usuário aos seus serviços de streaming favoritos.",
-        tech: ["React", "API", "Vercel"],
+        tech: ["React", "API", "Vercel", "Go", "Render"],
         link: "https://escuta-ai.vercel.app",
       },
       {
@@ -107,7 +107,7 @@ const translations = {
       {
         title: "Escuta Aí",
         desc: "Musical similarity, connecting users to their favorite streaming services.",
-        tech: ["React", "API", "Vercel"],
+        tech: ["React", "API", "Vercel", "Go", "Render"],
         link: "https://escuta-ai.vercel.app",
       },
       {
