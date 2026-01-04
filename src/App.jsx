@@ -83,7 +83,7 @@ const translations = {
       success: "Mensagem enviada com sucesso!",
       error: "Erro ao enviar. Tente novamente.",
     },
-    footer: "Est 2007, resolvendo problemas.",
+    footer: "Colossenses 3:14",
     terminal: {
       lines: [
         { cmd: "café", status: "Concluído", color: "text-emerald-400" },
@@ -158,7 +158,7 @@ const translations = {
       success: "Message sent successfully!",
       error: "Failed to send. Please try again.",
     },
-    footer: "Est 2007, solving problems.",
+    footer: "Colossians 3:14",
     terminal: {
       lines: [
         { cmd: "coffee", status: "Complete", color: "text-emerald-400" },
