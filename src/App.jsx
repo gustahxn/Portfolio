@@ -112,7 +112,7 @@ const translations = {
       {
         title: "Edyx Editor",
         desc: "Minimalist text editor focused on performance and simplicity, featuring real A4 layout and PDF/DOCX export.",
-        tech: ["React","Node.js", "TypeScript", "Tailwind"],
+        tech: ["React", "Node.js", "TypeScript", "Tailwind"],
         link: "https://github.com/gustahxn/Edyx",
       },
       {
@@ -264,8 +264,8 @@ const StatusTerminal = ({ lines }) => {
 const Card = ({ children, className = "" }) => (
   <div
     className={`group relative p-6 transition-all duration-300 rounded-lg ${className}
-      dark:bg-neutral-900/40 dark:border dark:border-neutral-800 dark:hover:border-neutral-600 dark:hover:bg-neutral-900/60
-      bg-white border-2 border-neutral-300 hover:border-neutral-500 hover:shadow-xl`}
+      dark:bg-neutral-900/40 dark:border dark:border-neutral-800 
+      bg-white border-2 border-neutral-300`}
   >
     {children}
   </div>
@@ -547,7 +547,8 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
                     rel="noopener noreferrer"
                     className="block"
                   >
-                    <Card>
+                    {/* ADDED HOVER CLASSES HERE MANUALLY SINCE IT'S A LINK */}
+                    <Card className="hover:border-neutral-500 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-900/60">
                       <div className="flex justify-between items-start mb-3">
                         <h3 className="font-bold text-lg flex items-center gap-2 transition-colors dark:text-neutral-100 dark:group-hover:text-white text-black group-hover:text-emerald-700">
                           {project.title}
@@ -583,12 +584,12 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
             </h3>
             <div className="space-y-10">
               {data.experience.map((xp, i) => (
-                <div key={i} className="group grid grid-cols-[1fr_3fr] gap-4">
+                <div key={i} className="grid grid-cols-[1fr_3fr] gap-4">
                   <span className="text-xs font-mono dark:text-neutral-500 text-neutral-700 mt-1 font-bold">
                     {xp.time}
                   </span>
                   <div>
-                    <h4 className="font-bold transition-colors dark:text-neutral-100 dark:group-hover:text-white text-black group-hover:text-emerald-700">
+                    <h4 className="font-bold dark:text-neutral-100 text-black">
                       {xp.role}
                     </h4>
                     <p className="text-sm mb-2 dark:text-neutral-500 text-neutral-800 font-bold">
@@ -612,7 +613,7 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
                 {data.skills.map((s, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 text-xs font-bold rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 dark:hover:border-neutral-500 text-neutral-900 bg-neutral-200 border-2 border-neutral-300 hover:border-neutral-600"
+                    className="px-3 py-1.5 text-xs font-bold rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 text-neutral-900 bg-neutral-200 border-2 border-neutral-300"
                   >
                     {s}
                   </span>
@@ -622,7 +623,7 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
                 {data.areas.map((s, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 text-xs font-bold rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 dark:hover:border-neutral-500 text-neutral-900 bg-neutral-200 border-2 border-neutral-300 hover:border-neutral-600"
+                    className="px-3 py-1.5 text-xs font-bold rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 text-neutral-900 bg-neutral-200 border-2 border-neutral-300"
                   >
                     {s}
                   </span>
