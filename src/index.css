@@ -5,6 +5,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (min-width: 24px) {
+  * {
+    cursor: none !important;
+  }
+
+  *,
+*::before,
+*::after,
+html,
+body,
+div,
+a,
+button,
+input,
+textarea {
+  cursor: none !important;
+}
+
+}
+
 html {
   background-color: #ffffff; 
 }

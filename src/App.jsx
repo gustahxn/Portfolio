@@ -206,6 +206,52 @@ const links = {
   phone: "tel:+5515991616085",
 };
 
+const CustomCursor = () => {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
+
+    const handleMouseOver = (e) => {
+      const target = e.target;
+      if (
+        ["A", "BUTTON", "INPUT", "TEXTAREA"].includes(target.tagName) ||
+        target.closest("a")
+      ) {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseover", handleMouseOver);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      className="pointer-events-none fixed z-[9999]"
+      style={{
+        left: mousePos.x,
+        top: mousePos.y,
+      }}
+      animate={{
+        scale: isHovered ? 1.5 : 1,
+      }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+    >
+      <div className="relative -translate-x-1/2 -translate-y-1/2">
+        <div className="h-3 w-3 rounded-full bg-emerald-500" />
+      </div>
+    </motion.div>
+  );
+};
+
 const TechBackground = () => {
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -312,12 +358,12 @@ const ContactForm = ({ texts }) => {
 
     emailjs
       .send(serviceID, templateID, templateParams, publicKey)
-      .then((response) => {
+      .then(() => {
         setStatus("success");
         setFormData({ name: "", email: "", message: "" });
         setTimeout(() => setStatus(""), 5000);
       })
-      .catch((err) => {
+      .catch(() => {
         setStatus("error");
       });
   };
@@ -443,43 +489,30 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
 
       <div
         className="fixed top-4 right-4 lg:top-6 lg:right-6 z-50 flex items-center gap-0 backdrop-blur-sm rounded-full p-1 shadow-lg
-          dark:bg-neutral-800 dark:border-2 dark:border-neutral-600
-          bg-white border-2 border-neutral-400"
+    dark:bg-neutral-800 dark:border-2 dark:border-neutral-600
+    bg-white border-2 border-neutral-400"
       >
-        <button
-          onClick={() => setLanguage("pt")}
-          className={`relative px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 ${
-            language === "pt"
-              ? "dark:text-white text-black"
-              : "dark:text-neutral-500 hover:dark:text-neutral-300 text-neutral-500 hover:text-neutral-700"
-          }`}
-        >
-          {language === "pt" && (
-            <motion.div
-              layoutId="activeTab"
-              className="absolute inset-0 rounded-full dark:bg-neutral-700 bg-neutral-300"
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-            />
-          )}
-          <span className="relative z-10">PT</span>
-        </button>
-        <button
-          onClick={() => setLanguage("en")}
-          className={`relative px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 ${
-            language === "en"
-              ? "dark:text-white text-black"
-              : "dark:text-neutral-500 hover:dark:text-neutral-300 text-neutral-500 hover:text-neutral-700"
-          }`}
-        >
-          {language === "en" && (
-            <motion.div
-              layoutId="activeTab"
-              className="absolute inset-0 rounded-full dark:bg-neutral-700 bg-neutral-300"
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-            />
-          )}
-          <span className="relative z-10">EN</span>
-        </button>
+        {["pt", "en"].map((lang) => (
+          <button
+            key={lang}
+            onClick={() => setLanguage(lang)}
+            className={`relative px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 ${
+              language === lang
+                ? "dark:text-white text-black"
+                : "dark:text-neutral-500 hover:dark:text-neutral-300 text-neutral-500 hover:text-neutral-700"
+            }`}
+          >
+            {language === lang && (
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="absolute inset-0 rounded-full dark:bg-neutral-700 bg-neutral-300"
+                style={{ zIndex: -1 }}
+              />
+            )}
+            <span className="relative z-10 uppercase">{lang}</span>
+          </button>
+        ))}
       </div>
 
       <div className="relative z-10 lg:flex lg:justify-between lg:gap-4 max-w-screen-xl mx-auto">
@@ -726,6 +759,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <CustomCursor />
       <div className="min-h-screen font-sans selection:bg-opacity-50 transition-colors dark:bg-black dark:text-neutral-400 dark:selection:bg-neutral-800 dark:selection:text-white bg-white text-neutral-950 selection:bg-neutral-300 selection:text-black">
         <Routes>
           <Route
@@ -740,7 +774,6 @@ function App() {
               />
             }
           />
-
           <Route
             path="*"
             element={
