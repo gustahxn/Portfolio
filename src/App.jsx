@@ -209,9 +209,20 @@ const links = {
 const CustomCursor = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) {
+      return;
+    }
+
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+      setIsVisible(true);
+    };
 
     const handleMouseOver = (e) => {
       const target = e.target;
@@ -225,13 +236,32 @@ const CustomCursor = () => {
       }
     };
 
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    const handleMouseEnter = () => {
+      setIsVisible(true);
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseover", handleMouseOver);
+    document.body.addEventListener("mouseleave", handleMouseLeave);
+    document.body.addEventListener("mouseenter", handleMouseEnter);
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
+      document.body.removeEventListener("mouseleave", handleMouseLeave);
+      document.body.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, []);
+
+  const isTouchDevice =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  if (isTouchDevice) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -242,6 +272,7 @@ const CustomCursor = () => {
       }}
       animate={{
         scale: isHovered ? 1.5 : 1,
+        opacity: isVisible ? 1 : 0,
       }}
       transition={{ duration: 0.2, ease: "easeOut" }}
     >
