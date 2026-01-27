@@ -41,8 +41,8 @@ const translations = {
       {
         title: "Luvit.fun",
         desc: "Plataforma social completa com arquitetura robusta de banco de dados.",
-        tech: ["PHP", "SQL", "JavaScript"],
-        link: "https://www.luvit.fun",
+        tech: ["PHP","Laravel", "SQL", "JavaScript"],
+        link: "https://github.com/gustahxn/Luvit2",
       },
       {
         title: "Escuta Aí",
@@ -130,8 +130,8 @@ const translations = {
       {
         title: "Luvit.fun",
         desc: "Complete social platform with robust database architecture.",
-        tech: ["PHP", "SQL", "JavaScript"],
-        link: "https://www.luvit.fun",
+        tech: ["PHP", "Laravel", "SQL", "JavaScript"],
+        link: "https://github.com/gustahxn/Luvit2",
       },
       {
         title: "Escuta Aí",
