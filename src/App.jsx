@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Github,
   Linkedin,
   Mail,
   ArrowUpRight,
   Phone,
-  Sun,
-  Moon,
   Send,
   User,
   AtSign,
   MessageSquare,
   FileDown,
+  ChevronDown,
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
 import NotFound from "./NotFound";
@@ -21,11 +20,23 @@ import NotFound from "./NotFound";
 const translations = {
   pt: {
     name: "Gustavo da Silva",
-    role: "Desenvolvedor Full-Stack - 18 anos",
-    bio: "Foco em criar experiências digitais sólidas.\nEm busca de oportunidades como Estagiário ou Junior, na área de Desenvolvimento/TI",
+    role: "Desenvolvedor Full Stack & Infraestrutura",
+    bio: "Desenvolvedor Full Stack atuando também com infraestrutura de TI. Construo aplicações completas (Java, Go, PHP, React) e gerencio ambientes operacionais, com prática em automação Linux, redes, manutenção de hardware e suporte técnico avançado.",
     downloadBtn: "BAIXAR CV",
     resumePath: "/cvPT.pdf",
     projects: [
+      {
+        title: "Wallfinder",
+        desc: "Ferramenta CLI para automação e gerenciamento de recursos no Linux.",
+        tech: ["Bash", "Shell Script", "Linux", "CLI"],
+        link: "https://github.com/gustahxn/wallfinder",
+      },
+      {
+        title: "Escuta Aí",
+        desc: "Similaridade musical, conectando o usuário aos seus serviços de streaming favoritos via APIs RESTful.",
+        tech: ["Go", "React", "REST API", "Vercel", "Render"],
+        link: "https://escuta-ai.vercel.app",
+      },
       {
         title: "Edyx Editor",
         desc: "Editor de texto minimalista focado em performance e simplicidade, com layout A4 real e exportação PDF/DOCX.",
@@ -40,15 +51,9 @@ const translations = {
       },
       {
         title: "Luvit.fun",
-        desc: "Plataforma social completa com arquitetura robusta de banco de dados.",
-        tech: ["PHP","Laravel", "SQL", "JavaScript"],
+        desc: "Plataforma social completa com arquitetura robusta de banco de dados relacional.",
+        tech: ["PHP", "Laravel", "SQL", "JavaScript"],
         link: "https://github.com/gustahxn/Luvit2",
-      },
-      {
-        title: "Escuta Aí",
-        desc: "Similaridade musical, conectando o usuário aos seus serviços de streaming favoritos.",
-        tech: ["React", "API", "Vercel", "Go", "Render"],
-        link: "https://escuta-ai.vercel.app",
       },
       {
         title: "SoroFitness",
@@ -59,26 +64,57 @@ const translations = {
     ],
     experience: [
       {
+        company: "Prefeitura de São Paulo",
+        role: "Projetista de Tecnologia",
+        time: "Mai 2026 — Presente",
+        desc: "Gerenciamento de projetos de TI, manutenção de hardware/redes e suporte técnico avançado com equipes externas.",
+      },
+      {
+        company: "Facens",
+        role: "Estagiário de Inovação e Tecnologia",
+        time: "Fev 2026 — Mai 2026",
+        desc: "Desenvolvimento de soluções tecnológicas, suporte de hardware e atuação ativa em rotinas de inovação acadêmica.",
+      },
+      {
         company: "Prefeitura Municipal de Sorocaba",
         role: "Estagiário de TI",
-        time: "2024 — 2025",
-        desc: "Atuação no suporte técnico e desenvolvimento de aplicações internas para otimização de processos. Responsável pela configuração de estações, manutenção preventiva e auxílio na gestão de sistemas, garantindo a eficiência dos serviços municipais.",
+        time: "Set 2024 — Dez 2025",
+        desc: "Criação de aplicações internas para gestão de dados, suporte técnico e configuração de sistemas operacionais.",
       },
     ],
     education: [
       {
         school: "FATEC Sorocaba",
         course: "Análise e Desenvolvimento de Sistemas - Superior",
-        time: "2026 — 2028",
+        time: "2026 — 2027",
       },
       {
         school: "ETEC Fernando Prestes",
-        course: "Desenvolvimento de Sistemas - Técnico",
+        course: "Ensino Médio com Técnico em Desenvolvimento de Sistemas",
         time: "2023 — 2025",
       },
     ],
-    skills: ["PHP", "Laravel", "React", "Node.js", "SQL", "Git", "C#"],
-    areas: ["Web Development", "Banco de Dados", "Hardware", "Suporte TI"],
+    skills: [
+      "Java",
+      "Spring",
+      "Go",
+      "PHP",
+      "Laravel",
+      "React",
+      "JavaScript",
+      "SQL",
+      "Bash/Shell Script",
+      "Git",
+    ],
+    areas: [
+      "Linux",
+      "Redes",
+      "AWS",
+      "APIs REST",
+      "Manutenção de Hardware",
+      "Suporte Técnico Avançado",
+      "Web Development",
+    ],
     sections: {
       projects: "Projetos",
       experience: "Experiência",
@@ -98,7 +134,7 @@ const translations = {
       success: "Mensagem enviada com sucesso!",
       error: "Erro ao enviar. Tente novamente.",
     },
-    footer: "Colossenses 3:14",
+    footer: "© 2026 Gustavo da Silva. Todos os direitos reservados.",
     terminal: {
       lines: [
         { cmd: "café", status: "Concluído", color: "text-emerald-400" },
@@ -110,11 +146,23 @@ const translations = {
   },
   en: {
     name: "Gustavo da Silva",
-    role: "Full-Stack Developer - 18 y",
-    bio: "Focused on creating solid digital experiences.\nSeeking opportunities as an Intern or Junior in Development/IT",
+    role: "Full Stack Developer & Infrastructure",
+    bio: "Full Stack developer working across web systems and IT infrastructure. Building complete applications (Java, Go, PHP, React) and managing operational environments, with experience in Linux automation, networking, hardware maintenance, and advanced technical support.",
     downloadBtn: "Download CV",
     resumePath: "/cvEN.pdf",
     projects: [
+      {
+        title: "Wallfinder",
+        desc: "Command Line Interface (CLI) tool for automation and resource management in Linux environments.",
+        tech: ["Bash", "Shell Script", "Linux", "CLI"],
+        link: "https://github.com/gustahxn/wallfinder",
+      },
+      {
+        title: "Escuta Aí",
+        desc: "Musical similarity platform, connecting users to streaming services via cloud RESTful APIs.",
+        tech: ["Go", "React", "REST API", "Vercel", "Render"],
+        link: "https://escuta-ai.vercel.app",
+      },
       {
         title: "Edyx Editor",
         desc: "Minimalist text editor focused on performance and simplicity, featuring real A4 layout and PDF/DOCX export.",
@@ -129,15 +177,9 @@ const translations = {
       },
       {
         title: "Luvit.fun",
-        desc: "Complete social platform with robust database architecture.",
+        desc: "Complete social platform with robust relational database architecture.",
         tech: ["PHP", "Laravel", "SQL", "JavaScript"],
         link: "https://github.com/gustahxn/Luvit2",
-      },
-      {
-        title: "Escuta Aí",
-        desc: "Musical similarity, connecting users to their favorite streaming services.",
-        tech: ["React", "API", "Vercel", "Go", "Render"],
-        link: "https://escuta-ai.vercel.app",
       },
       {
         title: "SoroFitness",
@@ -148,26 +190,57 @@ const translations = {
     ],
     experience: [
       {
+        company: "São Paulo City Hall",
+        role: "Technology Project Specialist",
+        time: "May 2026 — Present",
+        desc: "Management of IT projects, hardware/network maintenance, and advanced technical support alongside external teams.",
+      },
+      {
+        company: "Facens",
+        role: "Innovation and Technology Intern",
+        time: "Feb 2026 — May 2026",
+        desc: "Development of technological solutions, hardware support, and active participation in academic innovation routines.",
+      },
+      {
         company: "Sorocaba City Hall",
         role: "IT Intern",
-        time: "2024 — 2025",
-        desc: "Direct work in technical support and development of internal applications for process optimization. Responsible for workstation configuration, preventive maintenance, and system management support.",
+        time: "Sep 2024 — Dec 2025",
+        desc: "Creation of internal applications for data management, technical support, and operating system configuration.",
       },
     ],
     education: [
       {
-        school: "FATEC Sorocaba",
-        course: "Systems Analysis and Development - Higher Education",
-        time: "2026 — 2028",
+        school: "FATEC Sorocaba (College of Technology)",
+        course: "Associate Degree in Systems Analysis and Development",
+        time: "2026 — 2027",
       },
       {
         school: "ETEC Fernando Prestes",
-        course: "Systems Development - Technical",
+        course: "High School Integrated with Technical Degree in Systems Development",
         time: "2023 — 2025",
       },
     ],
-    skills: ["PHP", "Laravel", "React", "Node.js", "SQL", "Go", "C#"],
-    areas: ["Web Development", "Database", "Hardware", "IT Support"],
+    skills: [
+      "Java",
+      "Spring",
+      "Go",
+      "PHP",
+      "Laravel",
+      "React",
+      "JavaScript",
+      "SQL",
+      "Bash/Shell Script",
+      "Git",
+    ],
+    areas: [
+      "Linux",
+      "Networking",
+      "AWS",
+      "REST APIs",
+      "Hardware Maintenance",
+      "Advanced Tech Support",
+      "Web Development",
+    ],
     sections: {
       projects: "Projects",
       experience: "Experience",
@@ -187,7 +260,7 @@ const translations = {
       success: "Message sent successfully!",
       error: "Failed to send. Please try again.",
     },
-    footer: "Colossians 3:14",
+    footer: "© 2026 Gustavo da Silva. All rights reserved.",
     terminal: {
       lines: [
         { cmd: "coffee", status: "Complete", color: "text-emerald-400" },
@@ -206,96 +279,8 @@ const links = {
   phone: "tel:+5515991616085",
 };
 
-const CustomCursor = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    const isTouchDevice =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
-
-    if (isTouchDevice) {
-      return;
-    }
-
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-      setIsVisible(true);
-    };
-
-    const handleMouseOver = (e) => {
-      const target = e.target;
-      if (
-        ["A", "BUTTON", "INPUT", "TEXTAREA"].includes(target.tagName) ||
-        target.closest("a")
-      ) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
-
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseover", handleMouseOver);
-    document.body.addEventListener("mouseleave", handleMouseLeave);
-    document.body.addEventListener("mouseenter", handleMouseEnter);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseover", handleMouseOver);
-      document.body.removeEventListener("mouseleave", handleMouseLeave);
-      document.body.removeEventListener("mouseenter", handleMouseEnter);
-    };
-  }, []);
-
-  const isTouchDevice =
-    "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  if (isTouchDevice) {
-    return null;
-  }
-
-  return (
-    <motion.div
-      className="pointer-events-none fixed z-[9999]"
-      style={{
-        left: mousePos.x,
-        top: mousePos.y,
-      }}
-      animate={{
-        scale: isHovered ? 1.5 : 1,
-        opacity: isVisible ? 1 : 0,
-      }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-    >
-      <div className="relative -translate-x-1/2 -translate-y-1/2">
-        <div className="h-3 w-3 rounded-full bg-emerald-500" />
-      </div>
-    </motion.div>
-  );
-};
-
-const TechBackground = () => {
-  return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-      <div
-        className="absolute inset-0 
-          dark:bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] dark:bg-[size:16px_16px] 
-          bg-[linear-gradient(to_right,#00000025_1px,transparent_1px),linear-gradient(to_bottom,#00000025_1px,transparent_1px)] bg-[size:16px_16px]"
-      />
-      <div className="absolute inset-0 dark:bg-gradient-to-t dark:from-black/80 dark:via-black/60 dark:to-transparent bg-gradient-to-t from-white/95 via-white/80 to-transparent" />
-    </div>
-  );
-};
-
+// terminal interativo de status
 const StatusTerminal = ({ lines }) => {
   const [lineIndex, setLineIndex] = useState(0);
 
@@ -308,37 +293,37 @@ const StatusTerminal = ({ lines }) => {
 
   return (
     <div
-      className="mt-12 w-full max-w-sm p-5 rounded-lg font-mono text-sm backdrop-blur-sm select-none transition-colors 
-        dark:bg-neutral-900/40 dark:border dark:border-neutral-800
-        bg-neutral-200/50 border border-neutral-400"
+      className="mt-8 w-full max-w-sm p-4 rounded-xl font-mono text-xs select-none transition-colors 
+        dark:bg-neutral-900/60 dark:border dark:border-neutral-800
+        bg-white border-2 border-neutral-300/80 shadow-sm"
     >
-      <div className="flex gap-1.5 mb-4 opacity-100">
-        <div className="w-3 h-3 rounded-full bg-red-500" />
-        <div className="w-3 h-3 rounded-full bg-amber-500" />
-        <div className="w-3 h-3 rounded-full bg-emerald-500" />
+      <div className="flex gap-1.5 mb-3">
+        <div className="w-2.5 h-2.5 rounded-full bg-neutral-400 dark:bg-neutral-600" />
+        <div className="w-2.5 h-2.5 rounded-full bg-neutral-400 dark:bg-neutral-600" />
+        <div className="w-2.5 h-2.5 rounded-full bg-neutral-400 dark:bg-neutral-600" />
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <div className="flex dark:text-neutral-400 text-neutral-700">
-          <span className="text-emerald-600 mr-2">➜</span>
-          <span className="text-cyan-600 dark:text-cyan-400">~/gustavo</span>
-          <span className="text-purple-600 dark:text-purple-400 ml-1">
+          <span className="text-emerald-600 dark:text-emerald-400 mr-2">➜</span>
+          <span className="text-neutral-800 dark:text-neutral-300 font-semibold">~/gustavo</span>
+          <span className="text-neutral-500 dark:text-neutral-500 ml-1">
             git:(main)
           </span>
         </div>
-        <div className="flex dark:text-neutral-300 text-neutral-900 font-bold">
-          <span className="text-yellow-600 mr-2">$</span>
+        <div className="flex dark:text-neutral-200 text-neutral-900 font-medium">
+          <span className="text-neutral-500 mr-2">$</span>
           npm run dev
         </div>
 
-        <div className="pt-2 dark:border-t dark:border-neutral-800/50 border-t border-neutral-400 mt-2 space-y-1.5">
+        <div className="pt-2 dark:border-t dark:border-neutral-800 border-t border-neutral-200 mt-2 space-y-1">
           {lines.map((line, i) => (
             <div
               key={i}
               className={`flex justify-between ${
-                i === lineIndex ? "opacity-100" : "opacity-30"
+                i === lineIndex ? "opacity-100" : "opacity-35"
               } transition-opacity duration-300`}
             >
-              <span className="dark:text-neutral-400 text-neutral-800 font-medium">
+              <span className="dark:text-neutral-400 text-neutral-700 font-medium">
                 {line.cmd}
               </span>
               <span className={line.color}>{line.status}</span>
@@ -350,16 +335,53 @@ const StatusTerminal = ({ lines }) => {
   );
 };
 
+// cartao base reutilizavel
 const Card = ({ children, className = "" }) => (
   <div
-    className={`group relative transition-all duration-300 rounded-lg ${className}
-      dark:bg-neutral-900/40 dark:border dark:border-neutral-800 
-      bg-white border-2 border-neutral-300`}
+    className={`group relative transition-all duration-200 rounded-xl ${className}
+      dark:bg-neutral-900/60 dark:border dark:border-neutral-800 dark:hover:border-neutral-700
+      bg-white border-2 border-neutral-300/80 hover:border-neutral-400 shadow-[0_1px_3px_rgba(0,0,0,0.03)]`}
   >
     {children}
   </div>
 );
 
+// cartao de apresentacao de projeto
+const ProjectCard = ({ project }) => (
+  <a
+    href={project.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block group"
+  >
+    <Card className="p-4">
+      <div className="flex justify-between items-start mb-1.5">
+        <h4 className="font-semibold text-sm flex items-center gap-1.5 transition-colors dark:text-neutral-100 dark:group-hover:text-white text-neutral-950 group-hover:text-black">
+          {project.title}
+          <ArrowUpRight
+            size={14}
+            className="opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 transition-all text-neutral-500 dark:text-neutral-400"
+          />
+        </h4>
+      </div>
+      <p className="text-xs mb-3 leading-relaxed dark:text-neutral-400 text-neutral-700 font-normal">
+        {project.desc}
+      </p>
+      <div className="flex gap-1.5 flex-wrap">
+        {project.tech.map((t) => (
+          <span
+            key={t}
+            className="text-xs px-2 py-0.5 rounded-md transition-colors bg-neutral-800 text-neutral-300 border border-neutral-700/60"
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+    </Card>
+  </a>
+);
+
+// formulario de contato com emailjs
 const ContactForm = ({ texts }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -400,16 +422,16 @@ const ContactForm = ({ texts }) => {
   };
 
   return (
-    <Card className="mt-8 p-6">
+    <Card className="mt-5 p-5">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="group/input">
-          <label className="block text-xs font-bold mb-1 dark:text-neutral-400 text-neutral-900">
+          <label className="block text-xs font-bold mb-1 dark:text-neutral-300 text-neutral-950">
             {texts.name}
           </label>
           <div className="relative">
             <User
-              className="absolute left-3 top-2.5 text-neutral-500 group-focus-within/input:text-emerald-600 transition-colors"
-              size={16}
+              className="absolute left-3 top-2.5 text-neutral-400 group-focus-within/input:text-neutral-900 dark:group-focus-within/input:text-neutral-100 transition-colors"
+              size={15}
             />
             <input
               type="text"
@@ -418,21 +440,21 @@ const ContactForm = ({ texts }) => {
               placeholder={texts.namePlaceholder}
               value={formData.name}
               onChange={handleChange}
-              className="w-full pl-9 pr-3 py-2 rounded text-sm outline-none transition-all
-                dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-1 dark:focus:ring-neutral-500
-                bg-neutral-50 text-neutral-900 border-2 border-neutral-400 focus:border-neutral-600"
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-xs outline-none transition-all
+                dark:bg-neutral-900 dark:text-neutral-100 dark:border-neutral-800 dark:focus:border-neutral-600
+                bg-white text-neutral-950 border-2 border-neutral-300 focus:border-neutral-700 placeholder:text-neutral-400"
             />
           </div>
         </div>
 
         <div className="group/input">
-          <label className="block text-xs font-bold mb-1 dark:text-neutral-400 text-neutral-900">
+          <label className="block text-xs font-bold mb-1 dark:text-neutral-300 text-neutral-950">
             {texts.email}
           </label>
           <div className="relative">
             <AtSign
-              className="absolute left-3 top-2.5 text-neutral-500 group-focus-within/input:text-emerald-600 transition-colors"
-              size={16}
+              className="absolute left-3 top-2.5 text-neutral-400 group-focus-within/input:text-neutral-900 dark:group-focus-within/input:text-neutral-100 transition-colors"
+              size={15}
             />
             <input
               type="email"
@@ -441,21 +463,21 @@ const ContactForm = ({ texts }) => {
               placeholder={texts.emailPlaceholder}
               value={formData.email}
               onChange={handleChange}
-              className="w-full pl-9 pr-3 py-2 rounded text-sm outline-none transition-all
-                dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-1 dark:focus:ring-neutral-500
-                bg-neutral-50 text-neutral-900 border-2 border-neutral-400 focus:border-neutral-600"
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-xs outline-none transition-all
+                dark:bg-neutral-900 dark:text-neutral-100 dark:border-neutral-800 dark:focus:border-neutral-600
+                bg-white text-neutral-950 border-2 border-neutral-300 focus:border-neutral-700 placeholder:text-neutral-400"
             />
           </div>
         </div>
 
         <div className="group/input">
-          <label className="block text-xs font-bold mb-1 dark:text-neutral-400 text-neutral-900">
+          <label className="block text-xs font-bold mb-1 dark:text-neutral-300 text-neutral-950">
             {texts.message}
           </label>
           <div className="relative">
             <MessageSquare
-              className="absolute left-3 top-3 text-neutral-500 group-focus-within/input:text-emerald-600 transition-colors"
-              size={16}
+              className="absolute left-3 top-2.5 text-neutral-400 group-focus-within/input:text-neutral-900 dark:group-focus-within/input:text-neutral-100 transition-colors"
+              size={15}
             />
             <textarea
               name="message"
@@ -464,9 +486,9 @@ const ContactForm = ({ texts }) => {
               placeholder={texts.messagePlaceholder}
               value={formData.message}
               onChange={handleChange}
-              className="w-full pl-9 pr-3 py-2 rounded text-sm outline-none transition-all resize-none
-                dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-1 dark:focus:ring-neutral-500
-                bg-neutral-50 text-neutral-900 border-2 border-neutral-400 focus:border-neutral-600"
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-xs outline-none transition-all resize-none
+                dark:bg-neutral-900 dark:text-neutral-100 dark:border-neutral-800 dark:focus:border-neutral-600
+                bg-white text-neutral-950 border-2 border-neutral-300 focus:border-neutral-700 placeholder:text-neutral-400"
             />
           </div>
         </div>
@@ -474,12 +496,12 @@ const ContactForm = ({ texts }) => {
         <button
           type="submit"
           disabled={status === "sending" || status === "success"}
-          className={`flex items-center gap-2 px-4 py-2 rounded text-sm font-bold transition-all
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer
           ${
             status === "success"
               ? "bg-emerald-600 text-white"
-              : "border border-transparent bg-black text-white hover:bg-neutral-200 hover:border-black hover:text-black" +
-                " dark:bg-neutral-100 dark:text-black dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+              : "bg-neutral-950 text-white hover:bg-neutral-800 border border-transparent" +
+                " dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-white"
           }`}
         >
           {status === "sending" ? (
@@ -488,118 +510,106 @@ const ContactForm = ({ texts }) => {
             texts.success
           ) : (
             <>
-              {texts.send} <Send size={14} />
+              {texts.send} <Send size={13} />
             </>
           )}
         </button>
 
         {status === "error" && (
-          <p className="text-xs text-rose-600 font-bold mt-2">{texts.error}</p>
+          <p className="text-xs text-rose-500 font-medium mt-2">{texts.error}</p>
         )}
       </form>
     </Card>
   );
 };
 
-const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
-  const currentThemeIcon =
-    theme === "dark" ? <Sun size={18} /> : <Moon size={18} />;
+// componente principal da pagina
+const Portfolio = ({ data, language, setLanguage }) => {
+  const [showAllProjects, setShowAllProjects] = useState(false);
+
+  const initialProjects = data.projects.slice(0, 2);
+  const drawerProjects = data.projects.slice(2);
 
   return (
     <>
-      <TechBackground />
-
-      <button
-        onClick={toggleTheme}
-        className="fixed top-4 left-4 lg:top-6 lg:left-6 z-50 p-2.5 rounded-full backdrop-blur-sm transition-all shadow-lg
-          dark:bg-neutral-800 dark:border-2 dark:border-neutral-600 dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:border-neutral-500
-          bg-white border-2 border-neutral-400 text-neutral-900 hover:bg-neutral-100 hover:border-neutral-600"
-      >
-        {currentThemeIcon}
-      </button>
-
       <div
-        className="fixed top-4 right-4 lg:top-6 lg:right-6 z-50 flex items-center gap-0 backdrop-blur-sm rounded-full p-1 shadow-lg
-    dark:bg-neutral-800 dark:border-2 dark:border-neutral-600
-    bg-white border-2 border-neutral-400"
+        className="fixed top-4 right-4 lg:top-6 lg:right-6 z-50 flex items-center p-1 rounded-lg border-2 shadow-sm
+          dark:bg-neutral-900 dark:border-neutral-700
+          bg-white border-neutral-300"
       >
         {["pt", "en"].map((lang) => (
           <button
             key={lang}
             onClick={() => setLanguage(lang)}
-            className={`relative px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 ${
+            className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
               language === lang
-                ? "dark:text-white text-black"
-                : "dark:text-neutral-500 hover:dark:text-neutral-300 text-neutral-500 hover:text-neutral-700"
+                ? "dark:bg-neutral-800 dark:text-white bg-neutral-950 text-white"
+                : "dark:text-neutral-400 hover:dark:text-neutral-200 text-neutral-600 hover:text-black"
             }`}
           >
-            {language === lang && (
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="absolute inset-0 rounded-full dark:bg-neutral-700 bg-neutral-300"
-                style={{ zIndex: -1 }}
-              />
-            )}
-            <span className="relative z-10 uppercase">{lang}</span>
+            <span className="uppercase">{lang}</span>
           </button>
         ))}
       </div>
 
-      <div className="relative z-10 lg:flex lg:justify-between lg:gap-4 max-w-screen-xl mx-auto">
-        <header className="pt-28 pb-12 px-6 lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:mt-0 lg:py-24 lg:px-12">
+      <div className="relative z-10 lg:flex lg:justify-between lg:gap-8 max-w-screen-xl mx-auto">
+        <header className="pt-24 pb-10 px-6 lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24 lg:px-12">
           <div>
             <div>
-              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-3 font-sans dark:text-neutral-100 text-black">
+              <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2 dark:text-neutral-100 text-neutral-950">
                 {data.name}
               </h1>
-              <h2 className="text-xl mb-6 dark:text-neutral-100 text-neutral-900">
+              <h2 className="text-base lg:text-lg mb-6 dark:text-neutral-400 text-neutral-800 font-medium">
                 {data.role}
               </h2>
-              <p className="max-w-sm leading-relaxed mb-8 whitespace-pre-line dark:text-neutral-400 text-neutral-800 font-medium">
+              <p className="max-w-md leading-relaxed mb-6 text-xs sm:text-sm dark:text-neutral-400 text-neutral-800 font-normal">
                 {data.bio}
               </p>
 
-              <div className="flex flex-wrap items-center gap-6 mb-8">
-                <nav className="flex items-center gap-5">
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <nav className="flex items-center gap-2">
                   <a
                     href={links.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors dark:text-neutral-400 dark:hover:text-white text-neutral-800 hover:text-black"
+                    className="p-2 transition-colors rounded-lg border-2 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white dark:hover:border-neutral-700 border-neutral-300 bg-white text-neutral-800 hover:text-black hover:border-neutral-400"
+                    aria-label="GitHub"
                   >
-                    <Github size={22} />
+                    <Github size={18} />
                   </a>
                   <a
                     href={links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors dark:text-neutral-400 dark:hover:text-white text-neutral-800 hover:text-black"
+                    className="p-2 transition-colors rounded-lg border-2 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white dark:hover:border-neutral-700 border-neutral-300 bg-white text-neutral-800 hover:text-black hover:border-neutral-400"
+                    aria-label="LinkedIn"
                   >
-                    <Linkedin size={22} />
+                    <Linkedin size={18} />
                   </a>
                   <a
                     href={links.email}
-                    className="transition-colors dark:text-neutral-400 dark:hover:text-white text-neutral-800 hover:text-black"
+                    className="p-2 transition-colors rounded-lg border-2 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white dark:hover:border-neutral-700 border-neutral-300 bg-white text-neutral-800 hover:text-black hover:border-neutral-400"
+                    aria-label="Email"
                   >
-                    <Mail size={22} />
+                    <Mail size={18} />
                   </a>
                   <a
                     href={links.phone}
-                    className="transition-colors dark:text-neutral-400 dark:hover:text-white text-neutral-800 hover:text-black"
+                    className="p-2 transition-colors rounded-lg border-2 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white dark:hover:border-neutral-700 border-neutral-300 bg-white text-neutral-800 hover:text-black hover:border-neutral-400"
+                    aria-label="Phone"
                   >
-                    <Phone size={22} />
+                    <Phone size={18} />
                   </a>
                 </nav>
 
                 <a
                   href={data.resumePath}
                   download
-                  className="flex items-center gap-2 px-4 py-2 text-xs font-black uppercase tracking-wider rounded border-2 transition-all
-                    dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-100 dark:hover:text-black
-                    border-neutral-400 text-neutral-900 hover:bg-black hover:text-white hover:border-black"
+                  className="flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-lg border-2 transition-all cursor-pointer shadow-sm
+                    dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-100 dark:hover:text-neutral-950
+                    border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-950 hover:text-white hover:border-neutral-950"
                 >
-                  <FileDown size={16} />
+                  <FileDown size={14} />
                   {data.downloadBtn}
                 </a>
               </div>
@@ -609,68 +619,81 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
           </div>
         </header>
 
-        <main className="pt-0 px-6 pb-12 lg:w-1/2 lg:py-24 lg:px-12 space-y-24">
-          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-400">
-            <h3 className="text-sm font-black uppercase tracking-widest mb-8 dark:text-neutral-200 text-black">
-              {data.sections.projects}
-            </h3>
-            <div className="grid gap-4">
-              {data.projects.map((project, i) => (
-                <div key={i}>
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
-                  >
-                    <Card className="p-4 hover:border-neutral-500 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-900/60">
-                      <div className="flex justify-between items-start mb-1">
-                        <h3 className="font-bold text-base flex items-center gap-2 transition-colors dark:text-neutral-100 dark:group-hover:text-white text-black group-hover:text-emerald-700">
-                          {project.title}
-                          <ArrowUpRight
-                            size={14}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity"
-                          />
-                        </h3>
-                      </div>
-                      <p className="text-xs mb-3 leading-relaxed dark:text-neutral-400 text-neutral-800 font-medium">
-                        {project.desc}
-                      </p>
-                      <div className="flex gap-2 flex-wrap">
-                        {project.tech.map((t) => (
-                          <span
-                            key={t}
-                            className="text-[10px] font-bold px-2 py-0.5 rounded-full transition-colors dark:bg-neutral-800 dark:text-neutral-300 dark:border dark:border-neutral-700/50 dark:group-hover:border-neutral-500 bg-neutral-200 text-neutral-900 border-2 border-neutral-300 group-hover:border-neutral-500"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </Card>
-                  </a>
-                </div>
+        <main className="pt-0 px-6 pb-12 lg:w-1/2 lg:py-24 lg:px-12 space-y-16">
+          <section className="pt-8 dark:border-t dark:border-neutral-800/80 border-t-2 border-[#e5dfd3]">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-xs font-bold uppercase tracking-widest dark:text-neutral-200 text-neutral-950">
+                {data.sections.projects}
+              </h3>
+              <span className="text-xs dark:text-neutral-500 text-neutral-600">
+                {showAllProjects
+                  ? `${data.projects.length}/${data.projects.length}`
+                  : `${initialProjects.length}/${data.projects.length}`}
+              </span>
+            </div>
+
+            <div className="space-y-3">
+              {initialProjects.map((project) => (
+                <ProjectCard key={project.title} project={project} />
               ))}
+
+              <div
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                  showAllProjects
+                    ? "grid-rows-[1fr] opacity-100"
+                    : "grid-rows-[0fr] opacity-0 pointer-events-none"
+                }`}
+              >
+                <div className="overflow-hidden space-y-3">
+                  {drawerProjects.map((project) => (
+                    <ProjectCard key={project.title} project={project} />
+                  ))}
+                </div>
+              </div>
+
+              {drawerProjects.length > 0 && (
+                <div className="flex justify-center pt-2">
+                  <button
+                    onClick={() => setShowAllProjects(!showAllProjects)}
+                    aria-label={showAllProjects ? "Recolher projetos" : "Expandir projetos"}
+                    title={showAllProjects ? (language === "pt" ? "Recolher" : "Collapse") : (language === "pt" ? `Ver mais ${drawerProjects.length} projetos` : `View ${drawerProjects.length} more`)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 transition-all cursor-pointer shadow-sm
+                      dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:text-white
+                      bg-white border-neutral-300 text-neutral-800 hover:border-neutral-500 hover:text-black"
+                  >
+                    <span className="text-xs font-medium">
+                      {showAllProjects ? "−" : `+${drawerProjects.length}`}
+                    </span>
+                    <ChevronDown
+                      size={14}
+                      className={`transition-transform duration-300 ease-out ${
+                        showAllProjects ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+              )}
             </div>
           </section>
 
-          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-400">
-            <h3 className="text-sm font-black uppercase tracking-widest mb-8 dark:text-neutral-200 text-black">
+          <section className="pt-8 dark:border-t dark:border-neutral-800/80 border-t-2 border-[#e5dfd3]">
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-6 dark:text-neutral-200 text-neutral-950">
               {data.sections.experience}
             </h3>
-            <div className="space-y-10">
+            <div className="space-y-7">
               {data.experience.map((xp, i) => (
-                <div key={i} className="grid grid-cols-[1fr_3fr] gap-4">
-                  <span className="text-xs font-mono dark:text-neutral-500 text-neutral-700 mt-1 font-bold">
+                <div key={i} className="grid grid-cols-[105px_1fr] sm:grid-cols-[125px_1fr] gap-3">
+                  <span className="text-xs dark:text-neutral-500 text-neutral-600 mt-0.5">
                     {xp.time}
                   </span>
                   <div>
-                    <h4 className="font-bold dark:text-neutral-100 text-black">
+                    <h4 className="font-semibold text-sm dark:text-neutral-100 text-neutral-950">
                       {xp.role}
                     </h4>
-                    <p className="text-sm mb-2 dark:text-neutral-500 text-neutral-800 font-bold">
+                    <p className="text-xs mb-1.5 dark:text-neutral-400 text-neutral-800 font-medium">
                       {xp.company}
                     </p>
-                    <p className="text-sm leading-relaxed dark:text-neutral-400 text-neutral-800 font-medium">
+                    <p className="text-xs leading-relaxed dark:text-neutral-400 text-neutral-700 font-normal">
                       {xp.desc}
                     </p>
                   </div>
@@ -679,26 +702,26 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
             </div>
           </section>
 
-          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-400">
-            <h3 className="text-sm font-black uppercase tracking-widest mb-8 dark:text-neutral-200 text-black">
+          <section className="pt-8 dark:border-t dark:border-neutral-800/80 border-t-2 border-[#e5dfd3]">
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-5 dark:text-neutral-200 text-neutral-950">
               {data.sections.skills}
             </h3>
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-wrap gap-2">
+            <div className="space-y-3">
+              <div className="flex flex-wrap gap-1.5">
                 {data.skills.map((s, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 text-xs font-bold rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 text-neutral-900 bg-neutral-200 border-2 border-neutral-300"
+                    className="px-2.5 py-1 text-xs font-medium rounded-md transition-colors cursor-default bg-neutral-800 text-neutral-200 border border-neutral-700/80"
                   >
                     {s}
                   </span>
                 ))}
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {data.areas.map((s, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 text-xs font-bold rounded transition-colors cursor-default dark:text-neutral-300 dark:bg-neutral-900 dark:border dark:border-neutral-800 text-neutral-900 bg-neutral-200 border-2 border-neutral-300"
+                    className="px-2.5 py-1 text-xs font-medium rounded-md transition-colors cursor-default bg-neutral-800 text-neutral-200 border border-neutral-700/80"
                   >
                     {s}
                   </span>
@@ -707,22 +730,22 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
             </div>
           </section>
 
-          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-400">
-            <h3 className="text-sm font-black uppercase tracking-widest mb-8 dark:text-neutral-200 text-black">
+          <section className="pt-8 dark:border-t dark:border-neutral-800/80 border-t-2 border-[#e5dfd3]">
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-5 dark:text-neutral-200 text-neutral-950">
               {data.sections.education}
             </h3>
-            <div className="grid gap-4">
+            <div className="space-y-4">
               {data.education.map((edu, i) => (
-                <div key={i} className="flex justify-between items-end text-sm">
+                <div key={i} className="flex justify-between items-baseline text-xs gap-3">
                   <div>
-                    <div className="font-bold dark:text-neutral-100 text-black">
+                    <div className="font-semibold text-sm dark:text-neutral-100 text-neutral-950">
                       {edu.school}
                     </div>
-                    <div className="dark:text-neutral-500 text-neutral-800 font-medium">
+                    <div className="dark:text-neutral-400 text-neutral-700 font-normal mt-0.5">
                       {edu.course}
                     </div>
                   </div>
-                  <div className="font-mono text-xs dark:text-neutral-600 text-neutral-900 font-bold">
+                  <div className="text-xs dark:text-neutral-500 text-neutral-600 shrink-0">
                     {edu.time}
                   </div>
                 </div>
@@ -730,34 +753,25 @@ const Portfolio = ({ data, language, setLanguage, theme, toggleTheme }) => {
             </div>
           </section>
 
-          <section className="pt-8 dark:border-t-2 dark:border-neutral-800 border-t-2 border-neutral-400">
-            <h3 className="text-sm font-black uppercase tracking-widest mb-8 dark:text-neutral-200 text-black">
+          <section className="pt-8 dark:border-t dark:border-neutral-800/80 border-t-2 border-[#e5dfd3]">
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-3 dark:text-neutral-200 text-neutral-950">
               {data.sections.contact}
             </h3>
-            <p className="mb-6 text-sm dark:text-neutral-400 text-neutral-900 font-medium">
+            <p className="text-xs dark:text-neutral-400 text-neutral-700 font-normal">
               {language === "pt"
-                ? "Tem um projeto em mente, deseja me contratar ou quer alinhar umas ideias? Entre em contato comigo!"
-                : "Have a project in mind, want to hire me or just talk some? Contact me!"}
+                ? "Tem um projeto em mente, deseja me contratar ou quer trocar uma ideia? Me mande uma mensagem!"
+                : "Have a project in mind, want to hire me or just talk some? Reach out to me!"}
             </p>
             <ContactForm texts={data.contactForm} />
           </section>
 
-          <footer className="text-xs pt-12 dark:text-neutral-400 text-neutral-700 font-bold">
-            <p>{data.footer}</p>
-          </footer>
         </main>
       </div>
     </>
   );
 };
 
-const getInitialTheme = () => {
-  if (typeof window !== "undefined" && localStorage.getItem("theme")) {
-    return localStorage.getItem("theme");
-  }
-  return "dark";
-};
-
+// recupera idioma inicial
 const getInitialLanguage = () => {
   if (typeof window !== "undefined" && localStorage.getItem("language")) {
     return localStorage.getItem("language");
@@ -765,33 +779,18 @@ const getInitialLanguage = () => {
   return "pt";
 };
 
+// componente raiz
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage);
-  const [theme, setTheme] = useState(getInitialTheme);
   const data = translations[language];
 
   useEffect(() => {
     localStorage.setItem("language", language);
   }, [language]);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
-  };
-
   return (
     <BrowserRouter>
-      <CustomCursor />
-      <div className="min-h-screen font-sans selection:bg-opacity-50 transition-colors dark:bg-black dark:text-neutral-400 dark:selection:bg-neutral-800 dark:selection:text-white bg-white text-neutral-950 selection:bg-neutral-300 selection:text-black">
+      <div className="min-h-screen font-sans selection:bg-neutral-800 selection:text-white transition-colors bg-black text-neutral-300">
         <Routes>
           <Route
             path="/"
@@ -800,18 +799,13 @@ function App() {
                 data={data}
                 language={language}
                 setLanguage={setLanguage}
-                theme={theme}
-                toggleTheme={toggleTheme}
               />
             }
           />
           <Route
             path="*"
             element={
-              <>
-                <TechBackground />
-                <NotFound language={language} />
-              </>
+              <NotFound language={language} />
             }
           />
         </Routes>
@@ -821,3 +815,4 @@ function App() {
 }
 
 export default App;
+
